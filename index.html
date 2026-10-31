@@ -1,134 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scott & Jamo — Training Log</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 850px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f4f6f8;
-      color: #1f2937;
-    }
-    h1 { margin-bottom: 5px; }
-    .subtitle { color: #64748b; margin-top: 0; }
-    .tabs { display: flex; gap: 8px; margin: 20px 0; }
-    button, input, select, textarea {
-      font: inherit;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-    }
-    button { cursor: pointer; background: #1d4ed8; color: white; border: 0; }
-    button.secondary { background: #64748b; }
-    button.delete { background: #b91c1c; padding: 7px 10px; }
-    .tab { flex: 1; }
-    .tab.active { background: #0f172a; }
-    .panel, .card {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      margin: 12px 0;
-      box-shadow: 0 1px 3px #00000012;
-    }
-    label { display: block; font-weight: bold; margin: 12px 0 5px; }
-    input, select, textarea { width: 100%; background: white; }
-    .exercise {
-      border-top: 1px solid #e2e8f0;
-      padding: 12px 0;
-    }
-    .exercise h3 { margin: 0 0 8px; font-size: 1rem; }
-    .set-row {
-      display: grid;
-      grid-template-columns: 55px 1fr 1fr;
-      gap: 8px;
-      align-items: center;
-      margin: 6px 0;
-    }
-    .set-row span { color: #64748b; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .history-item { border-top: 1px solid #e2e8f0; padding: 12px 0; }
-    .history-item:first-child { border-top: 0; }
-    .history-item p { margin: 5px 0; }
-    .muted { color: #64748b; font-size: .9rem; }
-    .hidden { display: none; }
-    @media (max-width: 600px) {
-      body { padding: 12px; }
-      .grid { grid-template-columns: 1fr; }
-      .tabs { flex-wrap: wrap; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scott & Jamo Training Log</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 850px;
+    margin: auto;
+    padding: 18px;
+    background: #f1f5f9;
+    color: #1e293b;
+  }
+  h1 { margin-bottom: 4px; }
+  .subtitle { color: #64748b; margin-top: 0; }
+  .tabs { display: flex; gap: 8px; margin: 20px 0; }
+  button, input, select, textarea {
+    font: inherit;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  button {
+    border: 0;
+    background: #1d4ed8;
+    color: white;
+    cursor: pointer;
+  }
+  button.secondary { background: #64748b; }
+  button.delete { background: #b91c1c; }
+  .tab { flex: 1; }
+  .tab.active { background: #0f172a; }
+  .panel, .entry {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  label { display: block; font-weight: bold; margin: 12px 0 5px; }
+  input, select, textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    background: white;
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .exercise { border-top: 1px solid #e2e8f0; padding: 12px 0; }
+  .exercise h3 { margin: 0 0 8px; font-size: 1rem; }
+  .set-row { display: grid; grid-template-columns: 55px 1fr 1fr; gap: 8px; align-items: center; margin: 6px 0; }
+  .muted { color: #64748b; font-size: .9rem; }
+  .hidden { display: none; }
+  .entry { border-top: 1px solid #e2e8f0; }
+  .entry p { margin: 6px 0; }
+  @media (max-width: 600px) {
+    body { padding: 10px; }
+    .grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; }
+  }
+</style>
 </head>
 <body>
-  <h1>Scott & Jamo Training Log</h1>
-  <p class="subtitle">90-day training tracker</p>
 
-  <div class="tabs">
-    <button class="tab active" id="workoutTab" onclick="showTab('workout')">Strength Workouts</button>
-    <button class="tab" id="activityTab" onclick="showTab('activity')">Activity Log</button>
-    <button class="tab" id="historyTab" onclick="showTab('history')">History</button>
+<h1>Scott & Jamo Training Log</h1>
+<p class="subtitle">90-day training tracker</p>
+
+<div class="tabs">
+  <button class="tab active" id="tabWorkout" onclick="showTab('workout')">Strength Workouts</button>
+  <button class="tab" id="tabActivity" onclick="showTab('activity')">Activity Log</button>
+  <button class="tab" id="tabHistory" onclick="showTab('history')">History</button>
+</div>
+
+<section id="panelWorkout" class="panel">
+  <h2>Log a Strength Workout</h2>
+  <div class="grid">
+    <div>
+      <label for="person">Person</label>
+      <select id="person"><option>Scott</option><option>Jamo</option></select>
+    </div>
+    <div>
+      <label for="workoutDate">Date</label>
+      <input type="date" id="workoutDate">
+    </div>
   </div>
+  <label for="workoutSelect">Workout</label>
+  <select id="workoutSelect" onchange="renderExercises()"></select>
+  <div id="exerciseList"></div>
+  <label for="workoutNotes">Notes (optional)</label>
+  <textarea id="workoutNotes" rows="2"></textarea>
+  <p><button onclick="saveWorkout()">Save Workout</button></p>
+</section>
 
-  <section id="workoutPanel" class="panel">
-    <h2>Log a Strength Workout</h2>
-    <div class="grid">
-      <div>
-        <label for="person">Person</label>
-        <select id="person">
-          <option>Scott</option>
-          <option>Jamo</option>
-        </select>
-      </div>
-      <div>
-        <label for="workoutDate">Date</label>
-        <input type="date" id="workoutDate">
-      </div>
+<section id="panelActivity" class="panel hidden">
+  <h2>Log Running or Baseball</h2>
+  <div class="grid">
+    <div>
+      <label for="activityPerson">Person</label>
+      <select id="activityPerson" onchange="updateActivityTypes()">
+        <option>Scott</option><option>Jamo</option>
+      </select>
     </div>
-
-    <label for="workoutSelect">Workout</label>
-    <select id="workoutSelect" onchange="renderExercises()"></select>
-    <div id="exerciseList"></div>
-    <label for="workoutNotes">Notes (optional)</label>
-    <textarea id="workoutNotes" rows="2" placeholder="How did the workout feel?"></textarea>
-    <p><button onclick="saveWorkout()">Save Workout</button></p>
-  </section>
-
-  <section id="activityPanel" class="panel hidden">
-    <h2>Log Running or Baseball</h2>
-    <div class="grid">
-      <div>
-        <label for="activityPerson">Person</label>
-        <select id="activityPerson" onchange="updateActivityTypes()">
-          <option>Scott</option>
-          <option>Jamo</option>
-        </select>
-      </div>
-      <div>
-        <label for="activityDate">Date</label>
-        <input type="date" id="activityDate">
-      </div>
+    <div>
+      <label for="activityDate">Date</label>
+      <input type="date" id="activityDate">
     </div>
+  </div>
+  <label for="activityType">Activity</label>
+  <select id="activityType" onchange="renderActivityFields()"></select>
+  <div id="activityFields"></div>
+  <label for="activityNotes">Notes (optional)</label>
+  <textarea id="activityNotes" rows="3" placeholder="Route, drills, effort, or other notes"></textarea>
+  <p><button onclick="saveActivity()">Save Activity</button></p>
+</section>
 
-    <label for="activityType">Activity</label>
-    <select id="activityType" onchange="updateActivityFields()"></select>
-    <div id="activityFields"></div>
-    <label for="activityNotes">Notes (optional)</label>
-    <textarea id="activityNotes" rows="3" placeholder="Route, drills, effort, or other notes"></textarea>
-    <p><button onclick="saveActivity()">Save Activity</button></p>
-  </section>
-
-  <section id="historyPanel" class="panel hidden">
-    <h2>Training History</h2>
-    <button class="secondary" onclick="exportCSV()">Export History to CSV</button>
-    <div id="historyList"></div>
-  </section>
+<section id="panelHistory" class="panel hidden">
+  <h2>Training History</h2>
+  <p><button class="secondary" onclick="exportCSV()">Export History to CSV</button></p>
+  <div id="historyList"></div>
+</section>
 
 <script>
-const workouts = {
+"use strict";
+
+const workoutPlans = {
   "Workout A — Chest, Shoulders & Triceps": [
     ["Bench Press", 3, 8],
     ["Incline Dumbbell Press", 3, 10],
@@ -162,69 +155,89 @@ const workouts = {
   ]
 };
 
-const STORAGE_KEY = "scottJamoTrainingLog";
-let records = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+const storageKey = "scottJamoTrainingLog";
+let records = [];
 
-function today() {
-  const d = new Date();
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
+try {
+  records = JSON.parse(localStorage.getItem(storageKey) || "[]");
+  if (!Array.isArray(records)) records = [];
+} catch (error) {
+  records = [];
 }
 
-document.getElementById("workoutDate").value = today();
-document.getElementById("activityDate").value = today();
+function localDate() {
+  const date = new Date();
+  return date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0") + "-" +
+    String(date.getDate()).padStart(2, "0");
+}
+
+document.getElementById("workoutDate").value = localDate();
+document.getElementById("activityDate").value = localDate();
 
 const workoutSelect = document.getElementById("workoutSelect");
-Object.keys(workouts).forEach(name => {
+Object.keys(workoutPlans).forEach(function(name) {
   const option = document.createElement("option");
   option.value = name;
   option.textContent = name;
   workoutSelect.appendChild(option);
 });
-renderExercises();
-updateActivityTypes();
-renderHistory();
 
-function showTab(tab) {
-  ["workout", "activity", "history"].forEach(name => {
-    document.getElementById(name + "Panel").classList.toggle("hidden", name !== tab);
-    document.getElementById(name + "Tab").classList.toggle("active", name === tab);
+function showTab(name) {
+  ["workout", "activity", "history"].forEach(function(tab) {
+    document.getElementById("panel" + capitalize(tab)).classList.toggle("hidden", tab !== name);
+    document.getElementById("tab" + capitalize(tab)).classList.toggle("active", tab === name);
   });
-  if (tab === "history") renderHistory();
+  if (name === "history") renderHistory();
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function renderExercises() {
   const list = document.getElementById("exerciseList");
   list.innerHTML = "";
-  workouts[workoutSelect.value].forEach((exercise, index) => {
-    const [name, sets, reps] = exercise;
+  const exercises = workoutPlans[workoutSelect.value] || [];
+
+  exercises.forEach(function(exercise, exerciseIndex) {
+    const name = exercise[0];
+    const sets = exercise[1];
+    const reps = exercise[2];
+    const isTimed = name === "Plank" || name === "Farmer's Carry";
+
     const section = document.createElement("div");
     section.className = "exercise";
-    const title = document.createElement("h3");
-    title.textContent = `${name} — ${sets} sets × ${reps}${name === "Plank" || name === "Farmer's Carry" ? " sec" : " reps"}`;
-    section.appendChild(title);
 
-    for (let set = 1; set <= sets; set++) {
+    const heading = document.createElement("h3");
+    heading.textContent = name + " — " + sets + " sets × " + reps +
+      (isTimed ? " seconds" : " reps");
+    section.appendChild(heading);
+
+    for (let setNumber = 1; setNumber <= sets; setNumber++) {
       const row = document.createElement("div");
       row.className = "set-row";
-      const setLabel = document.createElement("span");
-      setLabel.textContent = "Set " + set;
+
+      const label = document.createElement("span");
+      label.textContent = "Set " + setNumber;
+
       const repsInput = document.createElement("input");
       repsInput.type = "number";
       repsInput.min = "0";
-      repsInput.placeholder = name === "Plank" || name === "Farmer's Carry" ? "Seconds" : "Reps";
-      repsInput.setAttribute("aria-label", `${name} set ${set} reps or seconds`);
-      repsInput.id = `reps-${index}-${set}`;
       repsInput.value = reps;
+      repsInput.placeholder = isTimed ? "Seconds" : "Reps";
+      repsInput.id = "reps-" + exerciseIndex + "-" + setNumber;
+
       const weightInput = document.createElement("input");
       weightInput.type = "number";
       weightInput.min = "0";
       weightInput.step = "0.5";
       weightInput.placeholder = "Weight (lb)";
-      weightInput.setAttribute("aria-label", `${name} set ${set} weight in pounds`);
-      weightInput.id = `weight-${index}-${set}`;
-      row.append(setLabel, repsInput, weightInput);
+      weightInput.id = "weight-" + exerciseIndex + "-" + setNumber;
+
+      row.appendChild(label);
+      row.appendChild(repsInput);
+      row.appendChild(weightInput);
       section.appendChild(row);
     }
     list.appendChild(section);
@@ -232,17 +245,15 @@ function renderExercises() {
 }
 
 function saveWorkout() {
-  const name = workoutSelect.value;
-  const exercises = workouts[name].map((exercise, index) => {
-    const [exerciseName, sets] = exercise;
-    const setData = [];
-    for (let set = 1; set <= sets; set++) {
-      setData.push({
-        reps: document.getElementById(`reps-${index}-${set}`).value,
-        weight: document.getElementById(`weight-${index}-${set}`).value
+  const exercises = (workoutPlans[workoutSelect.value] || []).map(function(exercise, index) {
+    const sets = [];
+    for (let setNumber = 1; setNumber <= exercise[1]; setNumber++) {
+      sets.push({
+        reps: document.getElementById("reps-" + index + "-" + setNumber).value,
+        weight: document.getElementById("weight-" + index + "-" + setNumber).value
       });
     }
-    return { name: exerciseName, sets: setData };
+    return { name: exercise[0], sets: sets };
   });
 
   records.unshift({
@@ -250,10 +261,11 @@ function saveWorkout() {
     kind: "workout",
     person: document.getElementById("person").value,
     date: document.getElementById("workoutDate").value,
-    name,
-    exercises,
+    name: workoutSelect.value,
+    exercises: exercises,
     notes: document.getElementById("workoutNotes").value
   });
+
   saveRecords();
   document.getElementById("workoutNotes").value = "";
   alert("Workout saved!");
@@ -263,33 +275,34 @@ function updateActivityTypes() {
   const person = document.getElementById("activityPerson").value;
   const select = document.getElementById("activityType");
   select.innerHTML = "";
-  const types = person === "Scott"
-    ? ["Run"]
-    : ["Pitching", "Baseball Practice"];
-  types.forEach(type => {
+
+  const types = person === "Scott" ? ["Run"] : ["Pitching", "Baseball Practice"];
+  types.forEach(function(type) {
     const option = document.createElement("option");
     option.value = type;
     option.textContent = type;
     select.appendChild(option);
   });
-  updateActivityFields();
+  renderActivityFields();
 }
 
-function updateActivityFields() {
+function renderActivityFields() {
   const type = document.getElementById("activityType").value;
   const fields = document.getElementById("activityFields");
   fields.innerHTML = "";
 
   if (type === "Run") {
-    fields.innerHTML = `
-      <div class="grid">
-        <div><label for="distance">Distance (miles)</label><input id="distance" type="number" min="0" step="0.01" placeholder="e.g. 3.1"></div>
-        <div><label for="duration">Time (minutes)</label><input id="duration" type="number" min="0" step="1" placeholder="e.g. 30"></div>
-      </div>`;
-  } else {
-    fields.innerHTML = `
-      <label for="duration">Duration (minutes)</label>
-      <input id="duration" type="number" min="0" step="1" placeholder="e.g. 60">`;
+    fields.innerHTML =
+      '<div class="grid">' +
+        '<div><label for="distance">Distance (miles)</label>' +
+        '<input id="distance" type="number" min="0" step="0.01" placeholder="e.g. 3.1"></div>' +
+        '<div><label for="duration">Time (minutes)</label>' +
+        '<input id="duration" type="number" min="0" placeholder="e.g. 30"></div>' +
+      '</div>';
+  } else if (type) {
+    fields.innerHTML =
+      '<label for="duration">Duration (minutes)</label>' +
+      '<input id="duration" type="number" min="0" placeholder="e.g. 60">';
   }
 }
 
@@ -301,57 +314,60 @@ function saveActivity() {
     person: document.getElementById("activityPerson").value,
     date: document.getElementById("activityDate").value,
     name: type,
-    duration: document.getElementById("duration")?.value || "",
+    duration: document.getElementById("duration") ? document.getElementById("duration").value : "",
     notes: document.getElementById("activityNotes").value
   };
-  if (type === "Run") record.distance = document.getElementById("distance").value;
+
+  if (type === "Run") {
+    record.distance = document.getElementById("distance").value;
+  }
 
   records.unshift(record);
   saveRecords();
   document.getElementById("activityNotes").value = "";
-  updateActivityFields();
   alert("Activity saved!");
 }
 
 function saveRecords() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  localStorage.setItem(storageKey, JSON.stringify(records));
   renderHistory();
 }
 
 function renderHistory() {
   const list = document.getElementById("historyList");
-  if (!list) return;
   list.innerHTML = "";
 
-  if (!records.length) {
-    list.textContent = "No training entries yet.";
+  if (records.length === 0) {
+    list.textContent = "No entries yet. Save a workout or activity to get started.";
     return;
   }
 
-  records.forEach(record => {
-    const card = document.createElement("div");
-    card.className = "history-item";
-    const heading = document.createElement("strong");
-    heading.textContent = `${record.date} — ${record.person}: ${record.name}`;
-    card.appendChild(heading);
+  records.forEach(function(record) {
+    const entry = document.createElement("div");
+    entry.className = "entry";
+
+    const title = document.createElement("strong");
+    title.textContent = record.date + " — " + record.person + ": " + record.name;
+    entry.appendChild(title);
 
     if (record.kind === "activity") {
       const details = [];
-      if (record.distance) details.push(`${record.distance} miles`);
-      if (record.duration) details.push(`${record.duration} minutes`);
+      if (record.distance) details.push(record.distance + " miles");
+      if (record.duration) details.push(record.duration + " minutes");
       if (details.length) {
         const p = document.createElement("p");
         p.textContent = details.join(" • ");
-        card.appendChild(p);
+        entry.appendChild(p);
       }
     } else {
-      record.exercises.forEach(exercise => {
+      record.exercises.forEach(function(exercise) {
         const p = document.createElement("p");
-        p.textContent = exercise.name + ": " + exercise.sets.map((set, i) => {
-          const weight = set.weight ? ` @ ${set.weight} lb` : "";
-          return `Set ${i + 1} ${set.reps || "—"}${weight}`;
-        }).join(", ");
-        card.appendChild(p);
+        p.textContent = exercise.name + ": " + exercise.sets.map(function(set, index) {
+          let text = "Set " + (index + 1) + " — " + (set.reps || "—");
+          if (set.weight) text += " reps @ " + set.weight + " lb";
+          return text;
+        }).join("; ");
+        entry.appendChild(p);
       });
     }
 
@@ -359,31 +375,31 @@ function renderHistory() {
       const note = document.createElement("p");
       note.className = "muted";
       note.textContent = "Notes: " + record.notes;
-      card.appendChild(note);
+      entry.appendChild(note);
     }
 
-    const del = document.createElement("button");
-    del.className = "delete";
-    del.textContent = "Delete";
-    del.onclick = () => {
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete";
+    deleteButton.textContent = "Delete entry";
+    deleteButton.onclick = function() {
       if (confirm("Delete this entry?")) {
-        records = records.filter(item => item.id !== record.id);
+        records = records.filter(function(item) { return item.id !== record.id; });
         saveRecords();
       }
     };
-    card.appendChild(del);
-    list.appendChild(card);
+    entry.appendChild(deleteButton);
+    list.appendChild(entry);
   });
 }
 
 function exportCSV() {
-  const rows = [
-    ["Date", "Person", "Type", "Name", "Exercise", "Set",
-     "Reps/Seconds", "Weight (lb)", "Distance (mi)",
-     "Duration (min)", "Notes"]
-  ];
+  const rows = [[
+    "Date", "Person", "Type", "Name", "Exercise",
+    "Set", "Reps/Seconds", "Weight (lb)", "Distance (mi)",
+    "Duration (min)", "Notes"
+  ]];
 
-  records.forEach(record => {
+  records.forEach(function(record) {
     if (record.kind === "activity") {
       rows.push([
         record.date, record.person, "Activity", record.name,
@@ -391,8 +407,8 @@ function exportCSV() {
         record.duration || "", record.notes || ""
       ]);
     } else {
-      record.exercises.forEach(exercise => {
-        exercise.sets.forEach((set, index) => {
+      record.exercises.forEach(function(exercise) {
+        exercise.sets.forEach(function(set, index) {
           rows.push([
             record.date, record.person, "Workout", record.name,
             exercise.name, index + 1, set.reps, set.weight,
@@ -403,15 +419,13 @@ function exportCSV() {
     }
   });
 
-  const csv = rows.map(row =>
-    row.map(value =>
-      '"' + String(value ?? "").replace(/"/g, '""') + '"'
-    ).join(",")
-  ).join("\n");
+  const csv = rows.map(function(row) {
+    return row.map(function(value) {
+      return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
+    }).join(",");
+  }).join("\n");
 
-  const blob = new Blob([csv], {
-    type: "text/csv;charset=utf-8;"
-  });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -419,7 +433,10 @@ function exportCSV() {
   link.click();
   URL.revokeObjectURL(url);
 }
-}
+
+renderExercises();
+updateActivityTypes();
+renderHistory();
 </script>
 </body>
 </html>
