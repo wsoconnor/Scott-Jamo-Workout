@@ -377,28 +377,48 @@ function renderHistory() {
 }
 
 function exportCSV() {
-  const rows = [["Date", "Person", "Type", "Name", "Exercise", "Set", "Reps/Seconds", "Weight (lb)", "Distance (mi)", "Duration (min)", "Notes"]];
+  const rows = [
+    ["Date", "Person", "Type", "Name", "Exercise", "Set",
+     "Reps/Seconds", "Weight (lb)", "Distance (mi)",
+     "Duration (min)", "Notes"]
+  ];
+
   records.forEach(record => {
     if (record.kind === "activity") {
-      rows.push([record.date, record.person, "Activity", record.name, "", "", "", "", record.distance || "", record.duration || "", record.notes || ""]);
+      rows.push([
+        record.date, record.person, "Activity", record.name,
+        "", "", "", "", record.distance || "",
+        record.duration || "", record.notes || ""
+      ]);
     } else {
       record.exercises.forEach(exercise => {
         exercise.sets.forEach((set, index) => {
-          rows.push([record.date, record.person, "Workout", record.name, exercise.name, index + 1, set.reps, set.weight, "", "", record.notes || ""]);
+          rows.push([
+            record.date, record.person, "Workout", record.name,
+            exercise.name, index + 1, set.reps, set.weight,
+            "", "", record.notes || ""
+          ]);
         });
       }
     }
   });
-  const csv = rows.map(row => row.map(value =>
-    '"' + String(value ?? "").replace(/"/g, '""') + '"'
-  ).join(",")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+  const csv = rows.map(row =>
+    row.map(value =>
+      '"' + String(value ?? "").replace(/"/g, '""') + '"'
+    ).join(",")
+  ).join("\n");
+
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8;"
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
   link.download = "scott-jamo-training-log.csv";
   link.click();
   URL.revokeObjectURL(url);
+}
 }
 </script>
 </body>
