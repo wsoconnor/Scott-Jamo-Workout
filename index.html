@@ -399,13 +399,6 @@ function exportCSV() {
     "Duration (min)", "Notes"
   ]];
 
-function exportCSV() {
-  const rows = [[
-    "Date", "Person", "Type", "Name", "Exercise",
-    "Set", "Reps/Seconds", "Weight (lb)", "Distance (mi)",
-    "Duration (min)", "Notes"
-  ]];
-
   records.forEach(function(record) {
     if (record.kind === "activity") {
       rows.push([
