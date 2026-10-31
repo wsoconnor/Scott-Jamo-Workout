@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scott & Jamo Workout Tracker</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 18px; background: #f4f6f8; color: #17202a; }
+  h1 { font-size: 25px; }
+  .card { background: white; padding: 16px; border-radius: 12px; margin: 14px 0; }
+  label { display: block; margin: 12px 0 5px; font-weight: bold; }
+  select, input, button { font: inherit; padding: 10px; border-radius: 7px; border: 1px solid #bbb; box-sizing: border-box; }
+  select, input { width: 100%; }
+  button { cursor: pointer; background: #155eef; color: white; border: none; margin: 5px 4px 5px 0; }
+  button.secondary { background: #596579; }
+  .exercise { border-top: 1px solid #ddd; padding: 12px 0; }
+  .set { display: grid; grid-template-columns: 35px 1fr 1fr; gap: 8px; align-items: center; margin: 7px 0; }
+  .set input { min-width: 0; }
+  .muted { color: #667085; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>Scott & Jamo Workout Tracker</h1>
+<p class="muted">90-day strength program · 45-minute workouts</p>
+
+<div class="card">
+  <label for="person">Athlete</label>
+  <select id="person">
+    <option>Scott</option>
+    <option>Jamo</option>
+  </select>
+
+  <label for="workout">Workout</label>
+  <select id="workout"></select>
+
+  <label for="date">Workout date</label>
+  <input id="date" type="date">
+
+  <div id="exercises"></div>
+  <button onclick="saveWorkout()">Save Workout</button>
+  <button class="secondary" onclick="clearWorkout()">Clear Form</button>
+</div>
+
+<div class="card">
+  <h2>Workout History</h2>
+  <div id="history"></div>
+  <button class="secondary" onclick="exportCSV()">Export History (CSV)</button>
+</div>
+
+<script>
+const workouts = {
+  "Workout A — Chest, Shoulders & Triceps": [
+    ["Bench Press", 3, 8],
+    ["Incline Dumbbell Press", 3, 10],
+    ["Seated Shoulder Press", 3, 10],
+    ["Lateral Raises", 2, 12],
+    ["Triceps Pushdowns", 2, 12]
+  ],
+  "Workout B — Back & Biceps": [
+    ["Lat Pulldown", 3, 10],
+    ["Seated Cable Row", 3, 10],
+    ["Dumbbell Row", 2, 10],
+    ["Face Pulls", 2, 12],
+    ["Dumbbell Curls", 3, 10]
+  ],
+  "Workout C — Legs & Core": [
+    ["Goblet Squat", 3, 10],
+    ["Romanian Deadlift", 3, 10],
+    ["Leg Press", 3, 12],
+    ["Calf Raises", 2, 15],
+    ["Plank", 3, 30]
+  ],
+  "Workout D — Full Body": [
+    ["Dumbbell Bench Press", 3, 10],
+    ["Assisted Pull-ups", 3, 8],
+    ["Dumbbell Lunges", 2, 10],
+    ["Hip Thrust", 3, 10],
+    ["Farmer's Carry", 3, 30]
+  ]
+};
+
+const $ = id => document.getElementById(id);
+const storageKey = "scottJamoWorkoutLogs";
+
+function getLogs() {
+  return JSON.parse(localStorage.getItem(storageKey) || "[]");
+}
+function setLogs(logs) {
+  localStorage.setItem(storageKey, JSON.stringify(logs));
+}
+function loadExercises() {
+  const name = $("workout").value;
+  $("exercises").innerHTML = "";
+  (workouts[name] || []).forEach((ex, i) => {
+    const div = document.createElement("div");
+    div.className = "exercise";
+    div.innerHTML = `<strong>${ex[0]}</strong>
+      <div class="muted">Target: ${ex[1]} sets × ${ex[2]} reps</div>`;
+    for (let s = 1; s <= ex[1]; s++) {
+      div.innerHTML += `<div class="set">
+        <span>${s}</span>
+        <input type="number" min="0" placeholder="Reps" id="r-${i}-${s}" value="${ex[2]}">
+        <input type="number" min="0" step="0.5" placeholder="Weight (lb)" id="w-${i}-${s}">
+      </div>`;
+    }
+    $("exercises").appendChild(div);
+  });
+}
+function clearWorkout() {
+  loadExercises();
+}
+function saveWorkout() {
+  const name = $("workout").value;
+  const person = $("person").value;
+  const date = $("date").value;
+  const exercises = (workouts[name] || []).map((ex, i) => ({
+    name: ex[0],
+    sets: Array.from({length: ex[1]}, (_, j) => ({
+      reps: $("r-" + i + "-" + (j + 1)).value,
+      weight: $("w-" + i + "-" + (j + 1)).value
+    }))
+  }));
+  const logs = getLogs();
+  logs.push({person, date, workout: name, exercises});
+  setLogs(logs);
+  renderHistory();
+  alert("Workout saved!");
+}
+function renderHistory() {
+  const logs = getLogs().slice().reverse();
+  $("history").innerHTML = logs.length ? "" : "<p>No workouts saved yet.</p>";
+  logs.forEach((log, index) => {
+    const div = document.createElement("div");
+    div.className = "exercise";
+    const details = log.exercises.map(ex => {
+      const sets = ex.sets.map(s => `${s.reps || "—"} reps @ ${s.weight || "—"} lb`).join(", ");
+      return `<div>${ex.name}: ${sets}</div>`;
+    }).join("");
+    div.innerHTML = `<strong>${log.date} · ${log.person}</strong>
+      <div>${log.workout}</div>${details}
+      <button class="secondary" onclick="deleteLog(${getLogs().length - 1 - index})">Delete</button>`;
+    $("history").appendChild(div);
+  });
+}
+function deleteLog(index) {
+  if (!confirm("Delete this workout?")) return;
+  const logs = getLogs();
+  logs.splice(index, 1);
+  setLogs(logs);
+  renderHistory();
+}
+function exportCSV() {
+  const rows = [["Date","Athlete","Workout","Exercise","Set","Reps","Weight (lb)"]];
+  getLogs().forEach(log => log.exercises.forEach(ex =>
+    ex.sets.forEach((set, i) =>
+      rows.push([log.date, log.person, log.workout, ex.name, i+1, set.reps, set.weight])
+    )
+  ));
+  const csv = rows.map(row => row.map(v => `"${String(v ?? "").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "scott-jamo-workouts.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+Object.keys(workouts).forEach(name => {
+  const option = document.createElement("option");
+  option.value = name;
+  option.textContent = name;
+  $("workout").appendChild(option);
+});
+$("workout").addEventListener("change", loadExercises);
+$("date").value = new Date().toISOString().slice(0,10);
+loadExercises();
+renderHistory();
+</script>
+</body>
+</html>
