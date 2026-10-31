@@ -399,23 +399,46 @@ function exportCSV() {
     "Duration (min)", "Notes"
   ]];
 
+function exportCSV() {
+  const rows = [[
+    "Date", "Person", "Type", "Name", "Exercise",
+    "Set", "Reps/Seconds", "Weight (lb)", "Distance (mi)",
+    "Duration (min)", "Notes"
+  ]];
+
   records.forEach(function(record) {
     if (record.kind === "activity") {
       rows.push([
-        record.date, record.person, "Activity", record.name,
-        "", "", "", "", record.distance || "",
-        record.duration || "", record.notes || ""
+        record.date,
+        record.person,
+        "Activity",
+        record.name,
+        "",
+        "",
+        "",
+        "",
+        record.distance || "",
+        record.duration || "",
+        record.notes || ""
       ]);
     } else {
       record.exercises.forEach(function(exercise) {
         exercise.sets.forEach(function(set, index) {
           rows.push([
-            record.date, record.person, "Workout", record.name,
-            exercise.name, index + 1, set.reps, set.weight,
-            "", "", record.notes || ""
+            record.date,
+            record.person,
+            "Workout",
+            record.name,
+            exercise.name,
+            index + 1,
+            set.reps,
+            set.weight,
+            "",
+            "",
+            record.notes || ""
           ]);
         });
-      }
+      });
     }
   });
 
@@ -429,7 +452,7 @@ function exportCSV() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "scott-jamo-training-log.csv";
+  link.download = "scott-jamo-workout-history.csv";
   link.click();
   URL.revokeObjectURL(url);
 }
